@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>전투 전략 우선순위</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.stat-buttons button {
+  margin: 5px;
+  padding: 10px 16px;
+  background: #1e293b;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.stat-buttons button:hover {
+  background: #334155;
+}
+
+.character-input {
+  margin-top: 20px;
+}
+
+.character-input input {
+  width: 70px;
+  margin: 4px;
+  padding: 4px;
+}
+
+.character-input button {
+  padding: 6px 12px;
+  margin-left: 6px;
+}
+
+.rank-list {
+  margin-top: 30px;
+  background: #020617;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.rank-item {
+  padding: 8px;
+  border-bottom: 1px solid #1e293b;
+}
+</style>
+</head>
+
+<body>
+
+<h1>⚔️ 전투 전략 우선순위</h1>
+
+<div class="stat-buttons">
+  <button onclick="sortBy('magic')">마법</button>
+  <button onclick="sortBy('hp')">체력</button>
+  <button onclick="sortBy('luck')">운</button>
+  <button onclick="sortBy('agi')">민첩</button>
+  <button onclick="sortBy('str')">근력</button>
+</div>
+
+<div class="character-input">
+  <h3>캐릭터 추가</h3>
+  이름 <input id="name">
+  마법 <input id="magic" type="number">
+  체력 <input id="hp" type="number">
+  운 <input id="luck" type="number">
+  민첩 <input id="agi" type="number">
+  근력 <input id="str" type="number">
+  <button onclick="addCharacter()">추가</button>
+</div>
+
+<div class="rank-list" id="rankList">
+  <h3>📊 우선순위 결과</h3>
+</div>
+
+<script>
+let characters = [];
+
+function addCharacter() {
+  const c = {
+    name: name.value,
+    magic: +magic.value,
+    hp: +hp.value,
+    luck: +luck.value,
+    agi: +agi.value,
+    str: +str.value
+  };
+  characters.push(c);
+  render(characters);
+}
+
+function sortBy(stat) {
+  const sorted = [...characters].sort((a, b) => b[stat] - a[stat]);
+  render(sorted, stat);
+}
+
+function render(list, stat = "") {
+  const rankList = document.getElementById("rankList");
+  rankList.innerHTML = `<h3>📊 ${stat ? stat + " 기준 " : ""}우선순위</h3>`;
+
+  list.forEach((c, i) => {
+    rankList.innerHTML += `
+      <div class="rank-item">
+        ${i + 1}위 - ${c.name} 
+        | 마법 ${c.magic} 
+        | 체력 ${c.hp} 
+        | 운 ${c.luck} 
+        | 민첩 ${c.agi} 
+        | 근력 ${c.str}
+      </div>`;
+  });
+}
+</script>
+
+</body>
+</html>
